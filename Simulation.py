@@ -344,7 +344,7 @@ def restoreDefault():
     for i in bodies:
         i.mass = i.defaultMass
         i.velocity = i.defaultVelocity
-        i.position = i.defaultPosition
+        i.position = list(i.defaultPosition)
         i.dirOfVel = i.defaultDirOfVel
 
 def collide():
