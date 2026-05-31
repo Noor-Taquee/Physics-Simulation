@@ -4,6 +4,7 @@ The logic for simulations
 
 from dataclasses import dataclass
 from typing import Callable, Any, Literal
+from math import sqrt
 
 EventMap = dict[str, list[Callable]]
 
@@ -20,6 +21,8 @@ K = 9*(10**9)
 G = 50
 """**Gravitational constant**"""
 
+RGBColor255 = tuple[int, int, int]
+
 BodyEventType = Literal["update","reset"]
 BodyEventMap = dict[BodyEventType, list[Callable]]
 
@@ -27,22 +30,33 @@ BodyEventMap = dict[BodyEventType, list[Callable]]
 class Body:
   """Simulation Body"""
   
-  def __init__(self, name: str, mass: float, x: float, y: float, color = "white"):
+  def __init__(self, name: str, mass: float, charge: float, x: float, y: float, color: RGBColor255 = (255, 255, 255)):
     self.name = name
     self.mass = mass
-    self.charge = 0
+    """Mass of the body in *kilograms*"""
+    self.charge = charge
+    """Charge of the body in *quloumb*"""
     self.defaultPosition = i2d(x,y)
-    self.color = "white"
+    self.color = color
     self.shape = "circle"
     self.size = 0
+    """multipliyer of the default size"""
+
+    self.position = i2d(self.defaultPosition.x, self.defaultPosition.y)
+    self.velocity = i2d(0,0)
+    """Velocity of the body in *m/s*"""
+    self.acceleration = i2d(0,0);
+    self.force = i2d(0,0)
     
     self.eventMap: BodyEventMap = {
       "update": [],
       "reset": []
     }
-    
+
+  def register(self):
+    """Adds the body in the calculation loop"""
+    if (simState.bodies.__contains__(self)): return;
     simState.bodies.append(self)
-    self.reset()
 
   def reset(self):
     self.position = i2d(self.defaultPosition.x, self.defaultPosition.y)
@@ -74,21 +88,19 @@ class Body:
       i(self)
 
   def add_event_listener(self, name: BodyEventType, callback: Callable[['Body'], Any]):
+    """Calls the passed `callback` function when the specified event is triggered."""
     if not name in self.eventMap.keys(): return;
   
     self.eventMap[name].append(callback);
 
   def remove_event_listener(self, name: BodyEventType, callback: Callable[['Body'], Any]):
+    """Removes the `callback` function from the stack."""
+    
     if not name in self.eventMap.keys(): return;
     callback_stack = self.eventMap[name];
     
     if not callback in callback_stack: return;
     callback_stack.remove(callback);
-
-def calc(p):
-  if (5-5 == 0): tr = True
-  else: tr = False
-  return tr
 
 # MARK: state
 @dataclass
@@ -100,26 +112,37 @@ class SimState:
   flowSwitch = False;
   """Toggle to control the mainloop"""
 
+  min_dis_for_calc = 5;
+  """Minimum distance to stop calculating the force."""
+
 simState = SimState([])
+
+
 
 def mainloop(time: float):
   if not simState.flowSwitch: return;
   
   for i in range(len(simState.bodies)):
-    o_body = simState.bodies[i]
+    body = simState.bodies[i]
     
     for j in range(len(simState.bodies)):
       if (i == j): continue;
-      c_body = simState.bodies[j]
+      body_2 = simState.bodies[j]
       
       # MARK: distance
-      dx = c_body.position.x - o_body.position.x
-      dy = c_body.position.y - o_body.position.y
-
-      if (dx == 0 or dy == 0): continue;
+      dx = body_2.position.x - body.position.x
+      dy = body_2.position.y - body.position.y
+      dis = sqrt(dx*dx + dy*dy)
+      if (dis == 0 or dis <= simState.min_dis_for_calc): continue;
       
       # MARK: gravitational force
-      o_body.force.x += G * c_body.mass * o_body.mass / (dx * dx)
-      o_body.force.y += G * c_body.mass * o_body.mass / (dy * dy)
+      force = G * body_2.mass * body.mass / (dis * dis)
+      body.force.x += force * dx/dis
+      body.force.y += force * dy/dis
+      
+      # MARK: electrostatic force
+      force = K * body_2.charge * body.charge / (dis * dis)
+      body.force.x += force * dx/dis
+      body.force.y += force * dy/dis
     
-    o_body.calculate(time);
+    body.calculate(time);
