@@ -1,0 +1,24 @@
+{
+  "recommendations": [
+    // Code formatter
+    "charliermarsh.ruff",
+
+    // Icon theme
+    "pkief.material-icon-theme",
+
+    // Theme
+    "sdras.night-owl",
+
+    // toml support
+    "tamasfe.even-better-toml",
+
+    // python
+    "ms-python.python",
+
+    // python environment
+    "ms-python.vscode-python-envs",
+
+    // pylance
+    "ms-python.vscode-pylance"
+  ]
+}

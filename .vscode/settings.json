@@ -1,0 +1,41 @@
+{
+  //#region: MARK: font
+  "editor.fontFamily": "'Google Sans Code', JetBrains Mono, Consolas, monospace",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 17,
+  "editor.lineHeight": 1.5,
+  "editor.cursorSmoothCaretAnimation": "on",
+  //#endregion: font
+
+  //#region: MARK: theme
+  "workbench.colorTheme": "Night Owl",
+  //#endregion: theme
+
+  //#region: MARK: formating
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": true,
+
+  // "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  //#endregion: formating
+
+  //#region: MARK: snippets
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  // Forces snippets to show up at the top of the autocomplete box
+  "editor.snippetSuggestions": "top",
+
+  // Enables snippet autocompletion inside text, code, strings, and markdown
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "on",
+    "strings": "on"
+  },
+  //#endregion: snippets
+
+  "git.enableSmartCommit": true,
+  "explorer.confirmDragAndDrop": false
+}

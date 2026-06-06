@@ -1,0 +1,19 @@
+{
+  "class": {
+    "scope": "python",
+    "prefix": "class",
+    "body": [
+      "class ${1:identifier}:",
+      "  def __init__(self):",
+      "    pass",
+      "  $0",
+    ],
+    "description": "Creates a class"
+  },
+  "function": {
+    "scope": "python",
+    "prefix": "def",
+    "body": ["def ${1:identifier}(${2:args}):", "  ${3:pass}$0"],
+    "description": "creates a function definition"
+  },
+}
