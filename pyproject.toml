@@ -1,0 +1,13 @@
+[tool.taskipy.tasks]
+run = "python src/pygame/main.py"
+sim = "python src/tkinter/Simulation.py"
+update = "echo \"updating dependencies...\" && .venv/bin/pip freeze > requirements.txt && echo \"done!\""
+format = "ruff format"
+lint = "ruff check"
+fix = "ruff check --fix"
+
+[tool.ruff]
+indent-width = 2
+
+[tool.ruff.format]
+indent-style = "space"

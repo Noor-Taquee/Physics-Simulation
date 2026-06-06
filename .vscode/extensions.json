@@ -1,7 +1,7 @@
 {
   "recommendations": [
     // Code formatter
-    "ms-python.black-formatter",
+    "charliermarsh.ruff",
 
     // Icon theme
     "pkief.material-icon-theme",
@@ -9,8 +9,14 @@
     // Theme
     "sdras.night-owl",
 
-    // pyhton
+    // toml support
+    "tamasfe.even-better-toml",
+
+    // python
     "ms-python.python",
+
+    // python environment
+    "ms-python.vscode-python-envs",
 
     // pylance
     "ms-python.vscode-pylance"
