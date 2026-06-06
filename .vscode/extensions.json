@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    // Code formatter
+    "ms-python.black-formatter",
+
+    // Icon theme
+    "pkief.material-icon-theme",
+
+    // Theme
+    "sdras.night-owl",
+
+    // pyhton
+    "ms-python.python",
+
+    // pylance
+    "ms-python.vscode-pylance"
+  ]
+}
