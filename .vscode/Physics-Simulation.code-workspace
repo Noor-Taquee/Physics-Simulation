@@ -1,8 +1,11 @@
 {
-	"folders": [
-		{
-			"path": ".."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "..",
+    },
+  ],
+  "settings": {
+    "workbench.colorTheme": "Night Owl",
+    "explorer.confirmDragAndDrop": true,
+  },
 }

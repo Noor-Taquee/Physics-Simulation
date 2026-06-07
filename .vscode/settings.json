@@ -36,6 +36,6 @@
   //#endregion Python
 
   //#region: MARK: Git
-  "git.enableSmartCommit": true
+  "git.enableSmartCommit": false
   //#endregion Git
 }
