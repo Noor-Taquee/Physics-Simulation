@@ -7,14 +7,12 @@
   "editor.cursorSmoothCaretAnimation": "on",
   //#endregion: font
 
-  //#region: MARK: theme
-  "workbench.colorTheme": "Night Owl",
-  //#endregion: theme
-
   //#region: MARK: formating
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.detectIndentation": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
 
   // "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[python]": {
@@ -23,9 +21,6 @@
   //#endregion: formating
 
   //#region: MARK: snippets
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
-  // Forces snippets to show up at the top of the autocomplete box
   "editor.snippetSuggestions": "top",
 
   // Enables snippet autocompletion inside text, code, strings, and markdown
@@ -36,6 +31,11 @@
   },
   //#endregion: snippets
 
-  "git.enableSmartCommit": true,
-  "explorer.confirmDragAndDrop": false
+  //#region: MARK: Python
+  "python.analysis.autoImportCompletions": true,
+  //#endregion Python
+
+  //#region: MARK: Git
+  "git.enableSmartCommit": true
+  //#endregion Git
 }
