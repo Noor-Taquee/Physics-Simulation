@@ -1,4 +1,5 @@
 # Physics-Simulation
+
 Motion due to gravitational and electrostatic forces
 
 ## Getting started with the project:
@@ -9,7 +10,7 @@ Motion due to gravitational and electrostatic forces
 python3 -m venv .venv
 ```
 
-#### Enter the new virtual environment
+#### Activate the virtual environment
 
 ```bash
 source .venv/bin/activate
