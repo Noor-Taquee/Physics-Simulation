@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from typing import Callable, Any, Literal
 from math import atan2, degrees, sqrt
 
+from core.eventSystem import EventTarget
+
 EventMap = defaultdict[str, list[Callable]]
 
 
@@ -108,38 +110,6 @@ BodyEventType = Literal["update", "reset"]
 BodyEventMap = dict[BodyEventType, list[Callable[..., Any]]]
 
 
-# MARK: eventTarget
-class EventTarget:
-  def __init__(self):
-    self.eventMap: BodyEventMap = {}
-
-  def add_event_listener(
-    self, name: BodyEventType, callback: Callable[["PhysicsBody"], Any]
-  ):
-    """Calls the passed `callback` function when the specified event is triggered."""
-    if name not in self.eventMap:
-      self.eventMap[name] = []
-    self.eventMap[name].append(callback)
-
-  def remove_event_listener(
-    self, name: BodyEventType, callback: Callable[["PhysicsBody"], Any]
-  ):
-    """Removes the `callback` function from the stack."""
-
-    if name not in self.eventMap.keys():
-      return
-    callback_stack = self.eventMap[name]
-    if callback not in callback_stack:
-      return
-    callback_stack.remove(callback)
-
-  def dispatch_event(self, name: BodyEventType, detail: Any) -> None:
-    if name not in self.eventMap:
-      self.eventMap[name] = []
-    for callback in self.eventMap[name]:
-      callback(detail)
-
-
 # MARK: PhysicsBody
 class PhysicsBody(EventTarget):
   """
@@ -194,7 +164,7 @@ class PhysicsBody(EventTarget):
     self.acceleration = Vector2d(0, 0)
     self.force = Vector2d(0, 0)
 
-    self.dispatch_event("reset", self)
+    self.dispatch_event("reset", {"target": self})
 
   def momentum(self) -> float:
     return self.velocity.magnitude() * self.mass
@@ -214,7 +184,7 @@ class PhysicsBody(EventTarget):
     # position
     self.position += self.velocity * time
 
-    self.dispatch_event("update", self)
+    self.dispatch_event("update", {"target": self})
 
 
 # MARK: Environment
@@ -231,21 +201,23 @@ class Environment:
   width: float | None
   boundary_collisions: bool
   """Switch to enable/disable boundary collisions"""
-  top_boundary: float | None
-  left_boundary: float | None
-  bottom_boundary: float | None
-  right_boundary: float | None
+  top: float | None
+  left: float | None
+  bottom: float | None
+  right: float | None
 
-  def __init__(self):
+  def __init__(self, height: float | None = None, width: float | None = None):
     self.acceleration = Vector2d(0, 0)
     self.force = Vector2d(0, 0)
     self.bodies = []
     self.min_dis_for_calc = 2
     self.boundary_collisions = False
-    self.top_boundary = None
-    self.right_boundary = None
-    self.bottom_boundary = None
-    self.left_boundary = None
+    self.height = height
+    self.width = width
+    self.top = self.height
+    self.right = self.width
+    self.bottom = 0
+    self.left = 0
 
   def register(self, *bodies: PhysicsBody):
     """Adds the body in the calculation loop"""
@@ -326,24 +298,24 @@ class Environment:
 
       # boundary collisions
       if self.boundary_collisions:
-        if self.right_boundary is not None:
-          if body.position.x + body.radius >= self.right_boundary:
-            body.position.x = self.right_boundary - body.radius
+        if self.right is not None:
+          if body.position.x + body.radius >= self.right:
+            body.position.x = self.right - body.radius
             body.velocity.x = -abs(body.velocity.x) * body.elastic_coefficient
 
-        if self.left_boundary is not None:
-          if body.position.x - body.radius <= self.left_boundary:
-            body.position.x = self.left_boundary + body.radius
+        if self.left is not None:
+          if body.position.x - body.radius <= self.left:
+            body.position.x = self.left + body.radius
             body.velocity.x = abs(body.velocity.x) * body.elastic_coefficient
 
-        if self.top_boundary is not None:
-          if body.position.y + body.radius >= self.top_boundary:
-            body.position.y = self.top_boundary - body.radius
+        if self.top is not None:
+          if body.position.y + body.radius >= self.top:
+            body.position.y = self.top - body.radius
             body.velocity.y = -abs(body.velocity.y) * body.elastic_coefficient
 
-        if self.bottom_boundary is not None:
-          if body.position.y - body.radius <= self.bottom_boundary:
-            body.position.y = self.bottom_boundary + body.radius
+        if self.bottom is not None:
+          if body.position.y - body.radius <= self.bottom:
+            body.position.y = self.bottom + body.radius
             body.velocity.y = abs(body.velocity.y) * body.elastic_coefficient
 
       body.calculate(time)
