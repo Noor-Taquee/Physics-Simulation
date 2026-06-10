@@ -219,9 +219,9 @@ class PhysicsBody(EventTarget):
 
 # MARK: Environment
 class Environment:
-  acceleration: i2d
+  acceleration: Vector2d
   """Environment acceleration"""
-  force: i2d
+  force: Vector2d
   """Environment force"""
   bodies: list[PhysicsBody]
   """list of bodies for the calculation"""
@@ -320,16 +320,9 @@ class Environment:
           body_2.velocity.x = v2n_new * cos - v2t * sin
           body_2.velocity.y = v2n_new * sin + v2t * cos
 
-          # body.velocity.x = -body.velocity.x * body.elastic_coefficient
-          # body.velocity.y = -body.velocity.y * body.elastic_coefficient
-          # body_2.velocity.x = -body_2.velocity.x * body_2.elastic_coefficient
-          # body_2.velocity.y = -body_2.velocity.y * body_2.elastic_coefficient
-
       # Inject environment properties
-      body.acceleration.x += self.acceleration.x
-      body.acceleration.y += self.acceleration.y
-      body.force.x += self.force.x
-      body.force.y += self.force.y
+      body.acceleration += self.acceleration
+      body.force += self.force
 
       # boundary collisions
       if self.boundary_collisions:
