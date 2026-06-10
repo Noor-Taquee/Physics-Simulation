@@ -1,9 +1,9 @@
 import pygame
 import sys
-from core.logic import i2d, Body, simState, mainloop
+from core.logic import Environment, Vector2d, PhysicsBody
 
 pygame.init()
-HEIGHT, WIDTH = 700, 1300
+HEIGHT, WIDTH = 600, 900
 
 space_color = (20, 20, 30)
 
@@ -16,18 +16,28 @@ fade_surface.fill(space_color)
 FPS = 60
 clock = pygame.time.Clock()
 
-simState.flowSwitch = True
-body1 = Body("name-1", 550, 0.0006, 350, 60)
-body1.velocity = i2d(0, 10)
-body1.register()
+space = Environment()
+space.acceleration = Vector2d(0, -10)
+space.boundary_collisions = True
+space.top_boundary = HEIGHT
+space.right_boundary = WIDTH
+space.bottom_boundary = 0
+space.left_boundary = 0
 
-body2 = Body("name-2", 750, 0.0006, 710, 260)
-body2.velocity = i2d(0, 0)
-body2.register()
+body1 = PhysicsBody("name-1", mass=1000, charge=0.0, x=400, y=300)
+body1.velocity = Vector2d(0.4662, 0.4324)
+body1.radius = 10
+space.register(body1)
 
-body3 = Body("name-3", 750, 0.0006, 510, 560)
-body3.velocity = i2d(0, -10)
-body3.register()
+body2 = PhysicsBody("name-2", mass=1000, charge=0.0, x=600, y=300)
+body2.velocity = Vector2d(0.4662, 0.4324)
+body2.radius = 10
+space.register(body2)
+
+body3 = PhysicsBody("name-3", mass=1000, charge=0.0, x=500, y=300)
+body3.radius = 10
+body3.velocity = Vector2d(-0.9324, -0.8648)
+space.register(body3)
 
 ex_btn = pygame.Rect(100, 200, 40, 50)
 
@@ -38,28 +48,44 @@ while True:
       pygame.quit()
       sys.exit()
 
-  # screen.fill(space_color);
-  screen.blit(fade_surface, (0, 0))
+  screen.fill(space_color)
+  # screen.blit(fade_surface, (0, 0))
 
-  for body in simState.bodies:
+  for body in space.bodies:
     screen_x = body.position.x
+    # Convert bottom-left origin to top-left origin
     screen_y = HEIGHT - body.position.y
 
-    pygame.draw.circle(screen, body.color, (screen_x, screen_y), 5)
+    pygame.draw.circle(screen, body.color, (screen_x, screen_y), body.radius)
 
-    # We scale the velocity (e.g., * 0.5) so the line isn't too long
     # We use -body.velocity.y because the Y-axis is flipped on screen
-    vector_scale = 5
+    vector_scale = 0.5
     end_x = screen_x + (body.velocity.x * vector_scale)
     end_y = screen_y - (body.velocity.y * vector_scale)
 
     pygame.draw.line(
-      screen, (0, 255, 0), (screen_x, screen_y), (int(end_x), screen_y), 1
+      screen,
+      color=(0, 255, 0),
+      start_pos=(screen_x, screen_y),
+      end_pos=(int(end_x), screen_y),
+      width=1,
     )
     pygame.draw.line(
-      screen, (0, 255, 0), (screen_x, screen_y), (screen_x, int(end_y)), 1
+      screen,
+      color=(0, 255, 0),
+      start_pos=(screen_x, screen_y),
+      end_pos=(screen_x, int(end_y)),
+      width=1,
+    )
+    pygame.draw.line(
+      screen,
+      color=(255, 0, 0),
+      start_pos=(screen_x, screen_y),
+      end_pos=(int(end_x), int(end_y)),
+      width=1,
     )
 
-  mainloop(0.1)
+  time_period = 5 / FPS
+  space.calculate(time_period)
   pygame.display.flip()
   clock.tick(FPS)
