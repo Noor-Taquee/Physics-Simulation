@@ -1,6 +1,7 @@
 [tool.taskipy.tasks]
 run = "python src/pygame/main.py"
 sim = "python src/tkinter/Simulation.py"
+test = "python -m tests.test"
 update = "echo \"updating dependencies...\" && .venv/bin/pip freeze > requirements.txt && echo \"done!\""
 format = "ruff format"
 lint = "ruff check"
