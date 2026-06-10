@@ -7,6 +7,15 @@
   "editor.cursorSmoothCaretAnimation": "on",
   //#endregion: font
 
+  // #region: MARK: files&folders
+  "files.exclude": {
+    "**/__pycache__/": true,
+    "**/desktop.ini": true,
+    "**/.pytest_cache/": true,
+    "**/.ruff_cache/": true
+  },
+  // #endregion: files&folders
+
   //#region: MARK: formating
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
