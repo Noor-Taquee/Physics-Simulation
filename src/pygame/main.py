@@ -10,36 +10,29 @@ space_color = (20, 20, 30)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 fade_surface = pygame.Surface((WIDTH, HEIGHT))
-fade_surface.set_alpha(100)  # Lower = longer trails (0-255)
+fade_surface.set_alpha(100)
 fade_surface.fill(space_color)
 
 FPS = 60
 clock = pygame.time.Clock()
 
-space = Environment()
+space = Environment(height=HEIGHT, width=WIDTH)
 space.acceleration = Vector2d(0, -10)
 space.boundary_collisions = True
-space.top_boundary = HEIGHT
-space.right_boundary = WIDTH
-space.bottom_boundary = 0
-space.left_boundary = 0
 
-body1 = PhysicsBody("name-1", mass=1000, charge=0.0, x=400, y=300)
-body1.velocity = Vector2d(0.4662, 0.4324)
+body1 = PhysicsBody("name-1", mass=50000, charge=0.0, x=550, y=300)
+body1.velocity = Vector2d(0, 20)
 body1.radius = 10
-space.register(body1)
 
-body2 = PhysicsBody("name-2", mass=1000, charge=0.0, x=600, y=300)
-body2.velocity = Vector2d(0.4662, 0.4324)
+body2 = PhysicsBody("name-2", mass=50000, charge=0.0, x=600, y=300)
+body2.velocity = Vector2d(0, -20)
 body2.radius = 10
-space.register(body2)
 
 body3 = PhysicsBody("name-3", mass=1000, charge=0.0, x=500, y=300)
 body3.radius = 10
 body3.velocity = Vector2d(-0.9324, -0.8648)
-space.register(body3)
 
-ex_btn = pygame.Rect(100, 200, 40, 50)
+space.register(body1, body2)
 
 while True:
   # Handle closing the window
@@ -58,7 +51,8 @@ while True:
 
     pygame.draw.circle(screen, body.color, (screen_x, screen_y), body.radius)
 
-    # We use -body.velocity.y because the Y-axis is flipped on screen
+    # region vector line
+    # -body.velocity.y because the Y-axis is flipped on screen
     vector_scale = 0.5
     end_x = screen_x + (body.velocity.x * vector_scale)
     end_y = screen_y - (body.velocity.y * vector_scale)
@@ -84,6 +78,7 @@ while True:
       end_pos=(int(end_x), int(end_y)),
       width=1,
     )
+    # endregion vector line
 
   time_period = 5 / FPS
   space.calculate(time_period)
