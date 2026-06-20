@@ -8,6 +8,9 @@
   //#endregion: font
 
   // #region: MARK: files&folders
+  "editor.hover.delay": 200,
+  "editor.minimap.renderCharacters": false,
+  "files.autoSave": "off",
   "files.exclude": {
     "**/__pycache__/": true,
     "**/desktop.ini": true,
@@ -22,8 +25,9 @@
   "editor.detectIndentation": true,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
+  "editor.formatOnType": false,
 
-  // "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
@@ -40,11 +44,27 @@
   },
   //#endregion: snippets
 
+  //#region: MARK: Git
+  "git.enableSmartCommit": false,
+  "diffEditor.codeLens": true,
+  //#endregion Git
+
   //#region: MARK: Python
   "python.analysis.autoImportCompletions": true,
+  "python.analysis.exclude": [
+    ".git",
+    ".venv",
+    "**/__pycache__",
+    "**/node_modules"
+  ],
+  "python.analysis.inlayHints.callArgumentNames": "partial",
+  "python.analysis.typeCheckingMode": "strict",
+  "python.analysis.typeEvaluation.analyzeUnannotatedFunctions": true,
+  "python.analysis.typeEvaluation.strictDictionaryInference": true,
+  "python.analysis.typeEvaluation.strictListInference": true,
+  "python.analysis.typeEvaluation.strictSetInference": true,
+  "python.analysis.supportDocstringTemplate": true,
+  "python.createEnvironment.contentButton": "show",
+  "python.missingPackage.severity": "Warning"
   //#endregion Python
-
-  //#region: MARK: Git
-  "git.enableSmartCommit": false
-  //#endregion Git
 }
