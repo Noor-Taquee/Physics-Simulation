@@ -9,7 +9,7 @@ from math import atan2, degrees, sqrt
 
 from core.eventSystem import EventTarget
 
-EventMap = defaultdict[str, list[Callable]]
+EventMap = defaultdict[str, list[Callable[..., Any]]]
 
 
 @dataclass
@@ -29,57 +29,39 @@ class Vector2d(i2d):
     return self.magnitude()
 
   def __add__(self, other: "Vector2d") -> "Vector2d":
-    if not isinstance(other, Vector2d):
-      return NotImplemented
     return Vector2d(self.x + other.x, self.y + other.y)
 
   def __iadd__(self, other: "Vector2d") -> "Vector2d":
-    if not isinstance(other, Vector2d):
-      return NotImplemented
     self.x += other.x
     self.y += other.y
     return self
 
   def __sub__(self, other: "Vector2d") -> "Vector2d":
-    if not isinstance(other, Vector2d):
-      return NotImplemented
     return Vector2d(self.x - other.x, self.y - other.y)
 
   def __isub__(self, other: "Vector2d") -> "Vector2d":
-    if not isinstance(other, Vector2d):
-      return NotImplemented
     self.x -= other.x
     self.y -= other.y
     return self
 
   def __mul__(self, scalar: int | float) -> "Vector2d":
-    if not isinstance(scalar, (int, float)):
-      return NotImplemented
     return Vector2d(self.x * scalar, self.y * scalar)
 
   def __imul__(self, scalar: int | float) -> "Vector2d":
-    if not isinstance(scalar, (int, float)):
-      return NotImplemented
     self.x *= scalar
     self.y *= scalar
     return self
 
-  def __rmul__(self, scalar: int | float):
-    if not isinstance(scalar, (int, float)):
-      return NotImplemented
+  def __rmul__(self, scalar: int | float) -> "Vector2d":
     return self.__mul__(scalar)
 
   def __truediv__(self, scalar: int | float) -> "Vector2d":
-    if not isinstance(scalar, (int, float)):
-      return NotImplemented
     if scalar == 0:
       raise ZeroDivisionError("Cannot divide a vector by 0.")
     reciprocal = 1 / scalar
     return Vector2d(self.x * reciprocal, self.y * reciprocal)
 
-  def __itruediv__(self, scalar: int | float):
-    if not isinstance(scalar, (int, float)):
-      return NotImplemented
+  def __itruediv__(self, scalar: int | float) -> "Vector2d":
     if scalar == 0:
       raise ZeroDivisionError("Cannot divide a vector by 0.")
     reciprocal = 1 / scalar
@@ -87,7 +69,7 @@ class Vector2d(i2d):
     self.y *= reciprocal
     return self
 
-  def magnitude(self):
+  def magnitude(self) -> float:
     return sqrt(self.x**2 + self.y**2)
 
   def angle_in_radians(self) -> float:
