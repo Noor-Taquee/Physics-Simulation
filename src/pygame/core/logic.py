@@ -5,9 +5,10 @@ The logic for simulations
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import Callable, Any, Literal
-from math import atan2, degrees, sqrt
+from math import sqrt
 
 from core.eventSystem import EventTarget
+from core.vector2d import Vector2d
 
 EventMap = defaultdict[str, list[Callable[..., Any]]]
 
@@ -18,66 +19,6 @@ class i2d:
 
   x: float = 0
   y: float = 0
-
-
-# MARK: vector 2d
-class Vector2d(i2d):
-  def __init__(self, x: float = 0, y: float = 0):
-    super().__init__(x, y)
-
-  def __call__(self) -> Any:
-    return self.magnitude()
-
-  def __add__(self, other: "Vector2d") -> "Vector2d":
-    return Vector2d(self.x + other.x, self.y + other.y)
-
-  def __iadd__(self, other: "Vector2d") -> "Vector2d":
-    self.x += other.x
-    self.y += other.y
-    return self
-
-  def __sub__(self, other: "Vector2d") -> "Vector2d":
-    return Vector2d(self.x - other.x, self.y - other.y)
-
-  def __isub__(self, other: "Vector2d") -> "Vector2d":
-    self.x -= other.x
-    self.y -= other.y
-    return self
-
-  def __mul__(self, scalar: int | float) -> "Vector2d":
-    return Vector2d(self.x * scalar, self.y * scalar)
-
-  def __imul__(self, scalar: int | float) -> "Vector2d":
-    self.x *= scalar
-    self.y *= scalar
-    return self
-
-  def __rmul__(self, scalar: int | float) -> "Vector2d":
-    return self.__mul__(scalar)
-
-  def __truediv__(self, scalar: int | float) -> "Vector2d":
-    if scalar == 0:
-      raise ZeroDivisionError("Cannot divide a vector by 0.")
-    reciprocal = 1 / scalar
-    return Vector2d(self.x * reciprocal, self.y * reciprocal)
-
-  def __itruediv__(self, scalar: int | float) -> "Vector2d":
-    if scalar == 0:
-      raise ZeroDivisionError("Cannot divide a vector by 0.")
-    reciprocal = 1 / scalar
-    self.x *= reciprocal
-    self.y *= reciprocal
-    return self
-
-  def magnitude(self) -> float:
-    return sqrt(self.x**2 + self.y**2)
-
-  def angle_in_radians(self) -> float:
-    angle = atan2(self.y, self.x)
-    return angle
-
-  def angle_in_degrees(self) -> float:
-    return degrees(self.angle_in_radians())
 
 
 K = 9 * (10**9)
@@ -100,19 +41,28 @@ class PhysicsBody(EventTarget):
   """
 
   name: str
+
   mass: float
   """Mass of the body in *kilograms*"""
+
   charge: float
   """Charge of the body in *quloumb*"""
+
   radius: float
+
   elastic_coefficient: float
+
   kinetic_friction_coefficient: float
   static_friction_coefficient: float
+
   defaultPosition: Vector2d
   position: Vector2d
+
   velocity: Vector2d
   """Velocity of the body in *m/s*"""
+
   acceleration: Vector2d
+
   force: Vector2d
 
   def __init__(
@@ -124,7 +74,7 @@ class PhysicsBody(EventTarget):
     charge: float = 0,
     color: RGBColor255 = (255, 255, 255),
   ) -> None:
-    super().__init__()
+    EventTarget().__init__()
     self.name = name
     self.mass = mass
     self.charge = charge
@@ -151,17 +101,15 @@ class PhysicsBody(EventTarget):
   def momentum(self) -> float:
     return self.velocity.magnitude() * self.mass
 
-  def calculate(self, time: float | int) -> None:
+  def resolve_forces(self, time: float | int) -> None:
     if self.mass == 0:
       return
 
     # acceleration
-    self.acceleration += self.force / self.mass
-    self.force = Vector2d(0, 0)
+    self.acceleration = self.force / self.mass
 
     # velocity
     self.velocity += self.acceleration * time
-    self.acceleration = Vector2d(0, 0)
 
     # position
     self.position += self.velocity * time
@@ -171,26 +119,28 @@ class PhysicsBody(EventTarget):
 
 # MARK: Environment
 class Environment:
-  acceleration: Vector2d
-  """Environment acceleration"""
-  force: Vector2d
-  """Environment force"""
+  forces: list[Callable[[PhysicsBody], Vector2d]]
+  """Environment forces"""
+
   bodies: list[PhysicsBody]
   """list of bodies for the calculation"""
+
   min_dis_for_calc: float
   """Minimum distance to stop calculating the force."""
+
   height: float | None
   width: float | None
+
   boundary_collisions: bool
   """Switch to enable/disable boundary collisions"""
+
   top: float | None
   left: float | None
   bottom: float | None
   right: float | None
 
   def __init__(self, height: float | None = None, width: float | None = None):
-    self.acceleration = Vector2d(0, 0)
-    self.force = Vector2d(0, 0)
+    self.forces = []
     self.bodies = []
     self.min_dis_for_calc = 2
     self.boundary_collisions = False
@@ -207,21 +157,52 @@ class Environment:
       if body not in self.bodies:
         self.bodies.append(body)
 
+  def check_boundary_collisions(self, body: PhysicsBody):
+    if not self.boundary_collisions:
+      return
+
+    if self.right is not None:
+      if body.position.x + body.radius >= self.right:
+        body.position.x = self.right - body.radius
+        body.velocity.x = -abs(body.velocity.x) * body.elastic_coefficient
+
+    if self.left is not None:
+      if body.position.x - body.radius <= self.left:
+        body.position.x = self.left + body.radius
+        body.velocity.x = abs(body.velocity.x) * body.elastic_coefficient
+
+    if self.top is not None:
+      if body.position.y + body.radius >= self.top:
+        body.position.y = self.top - body.radius
+        body.velocity.y = -abs(body.velocity.y) * body.elastic_coefficient
+
+    if self.bottom is not None:
+      if body.position.y - body.radius <= self.bottom:
+        body.position.y = self.bottom + body.radius
+        body.velocity.y = abs(body.velocity.y) * body.elastic_coefficient
+
   def calculate(self, time: float):
     """Calculates forces between bodies."""
     number_of_bodies = len(self.bodies)
+
     for i in range(number_of_bodies):
       body = self.bodies[i]
+
+      # Inject environment properties
+      for force in self.forces:
+        body.force += force(body)
 
       for j in range(i + 1, number_of_bodies):
         if i == j:
           continue
+
         body_2 = self.bodies[j]
 
         # distance
         dx = body_2.position.x - body.position.x
         dy = body_2.position.y - body.position.y
         dis = sqrt(dx * dx + dy * dy)
+
         if dis == 0 or dis <= self.min_dis_for_calc:
           continue
 
@@ -274,30 +255,9 @@ class Environment:
           body_2.velocity.x = v2n_new * cos - v2t * sin
           body_2.velocity.y = v2n_new * sin + v2t * cos
 
-      # Inject environment properties
-      body.acceleration += self.acceleration
-      body.force += self.force
-
       # boundary collisions
-      if self.boundary_collisions:
-        if self.right is not None:
-          if body.position.x + body.radius >= self.right:
-            body.position.x = self.right - body.radius
-            body.velocity.x = -abs(body.velocity.x) * body.elastic_coefficient
+      self.check_boundary_collisions(body)
 
-        if self.left is not None:
-          if body.position.x - body.radius <= self.left:
-            body.position.x = self.left + body.radius
-            body.velocity.x = abs(body.velocity.x) * body.elastic_coefficient
-
-        if self.top is not None:
-          if body.position.y + body.radius >= self.top:
-            body.position.y = self.top - body.radius
-            body.velocity.y = -abs(body.velocity.y) * body.elastic_coefficient
-
-        if self.bottom is not None:
-          if body.position.y - body.radius <= self.bottom:
-            body.position.y = self.bottom + body.radius
-            body.velocity.y = abs(body.velocity.y) * body.elastic_coefficient
-
-      body.calculate(time)
+    for body in self.bodies:
+      body.resolve_forces(time)
+      body.force = Vector2d(0, 0)

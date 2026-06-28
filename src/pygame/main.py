@@ -3,7 +3,7 @@ import sys
 from core.logic import Environment, Vector2d, PhysicsBody
 
 pygame.init()
-HEIGHT, WIDTH = 600, 900
+WIDTH, HEIGHT = 900, 600
 
 space_color = (20, 20, 30)
 
@@ -16,19 +16,29 @@ fade_surface.fill(space_color)
 FPS = 60
 clock = pygame.time.Clock()
 
-space = Environment(height=HEIGHT, width=WIDTH)
-space.acceleration = Vector2d(0, -10)
+space = Environment(HEIGHT, WIDTH)
+
+
+def mg(body: PhysicsBody):
+  return Vector2d(0, body.mass * -10)
+
+
+def air_resistance(body: PhysicsBody):
+  return -0.5 * body.velocity
+
+
+# space.forces.extend([mg, air_resistance])
 space.boundary_collisions = True
 
-body1 = PhysicsBody("name-1", mass=50000, charge=0.0, x=550, y=300)
-body1.velocity = Vector2d(0, 20)
-body1.radius = 10
+body1 = PhysicsBody("name-1", 450, 300, 500000, 0.0, (255, 255, 255))
+body1.velocity = Vector2d(0, 0)
+body1.radius = 20
 
-body2 = PhysicsBody("name-2", mass=50000, charge=0.0, x=600, y=300)
-body2.velocity = Vector2d(0, -20)
+body2 = PhysicsBody("name-2", 600, 300, 5, 0.0, (0, 0, 255))
+body2.velocity = Vector2d(0, 55)
 body2.radius = 10
 
-body3 = PhysicsBody("name-3", mass=1000, charge=0.0, x=500, y=300)
+body3 = PhysicsBody("name-3", 500, 300, 10, 0.0, (0, 255, 0))
 body3.radius = 10
 body3.velocity = Vector2d(-0.9324, -0.8648)
 
@@ -51,7 +61,7 @@ while True:
 
     pygame.draw.circle(screen, body.color, (screen_x, screen_y), body.radius)
 
-    # region vector line
+    # region vector line for velocity
     # -body.velocity.y because the Y-axis is flipped on screen
     vector_scale = 0.5
     end_x = screen_x + (body.velocity.x * vector_scale)
@@ -59,28 +69,28 @@ while True:
 
     pygame.draw.line(
       screen,
-      color=(0, 255, 0),
-      start_pos=(screen_x, screen_y),
-      end_pos=(int(end_x), screen_y),
-      width=1,
+      (0, 255, 0),
+      (screen_x, screen_y),
+      (int(end_x), screen_y),
+      1,
     )
     pygame.draw.line(
       screen,
-      color=(0, 255, 0),
-      start_pos=(screen_x, screen_y),
-      end_pos=(screen_x, int(end_y)),
-      width=1,
+      (0, 255, 0),
+      (screen_x, screen_y),
+      (screen_x, int(end_y)),
+      1,
     )
     pygame.draw.line(
       screen,
-      color=(255, 0, 0),
-      start_pos=(screen_x, screen_y),
-      end_pos=(int(end_x), int(end_y)),
-      width=1,
+      (255, 0, 0),
+      (screen_x, screen_y),
+      (int(end_x), int(end_y)),
+      1,
     )
     # endregion vector line
 
-  time_period = 5 / FPS
+  time_period = 4 / FPS
   space.calculate(time_period)
   pygame.display.flip()
   clock.tick(FPS)
