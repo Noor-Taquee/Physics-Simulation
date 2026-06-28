@@ -1,0 +1,7 @@
+{
+  "inlay_hints": {
+    "enabled": true,
+    "show_background": true,
+    "show_parameter_hints": true
+  }
+}
