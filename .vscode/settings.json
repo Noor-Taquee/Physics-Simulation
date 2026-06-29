@@ -3,7 +3,7 @@
   "editor.fontFamily": "'Google Sans Code', JetBrains Mono, Consolas, monospace",
   "editor.fontLigatures": true,
   "editor.fontSize": 17,
-  "editor.lineHeight": 1.5,
+  "editor.lineHeight": 1.618,
   "editor.cursorSmoothCaretAnimation": "on",
   //#endregion: font
 
@@ -51,12 +51,6 @@
 
   //#region: MARK: Python
   "python.analysis.autoImportCompletions": true,
-  "python.analysis.exclude": [
-    ".git",
-    ".venv",
-    "**/__pycache__",
-    "**/node_modules"
-  ],
   "python.analysis.inlayHints.callArgumentNames": "partial",
   "python.analysis.typeCheckingMode": "strict",
   "python.analysis.typeEvaluation.analyzeUnannotatedFunctions": true,
