@@ -1,12 +1,16 @@
 {
-  "languages": {
-    "Python": {
-      "colorize_brackets": true
-    }
-  },
+  "colorize_brackets": true,
   "inlay_hints": {
     "enabled": true,
     "show_background": true,
-    "show_parameter_hints": true
-  }
+    "show_parameter_hints": true,
+  },
+  "languages": {
+    "Python": {
+      "prettier": null,
+      "auto_indent_on_paste": true,
+      "format_on_save": "on",
+      "remove_trailing_whitespace_on_save": true,
+    },
+  },
 }
