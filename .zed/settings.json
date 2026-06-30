@@ -1,4 +1,9 @@
 {
+  "languages": {
+    "Python": {
+      "colorize_brackets": true
+    }
+  },
   "inlay_hints": {
     "enabled": true,
     "show_background": true,
