@@ -16,6 +16,49 @@ Thank you for your interest in contributing to this project.
 4. Test your work locally.
 5. Open a pull request with a clear description of the change.
 
+## Getting started with the project:
+
+Quickstart scripts for Linux and Windows are available to set up the project quickly in the `/setup` directory.
+
+### Quickstart for linux
+
+```bash
+chmod +x setup/linux.bash && ./setup/linux.bash
+```
+
+ - Once the script finishes, simply activate the environment and launch the project:
+
+```bash
+source .venv/bin/activate
+task run
+```
+
+## Quickstart for Windows
+
+```powerShell
+./setup/windows.ps1
+```
+
+ - Once the script finishes, simply activate the environment and launch the project:
+
+```powerShell
+.venv\Scripts\Activate.ps1
+task run
+```
+
+### Manual Setup
+
+If you prefer to set up the project manually, follow these steps:
+ - Create a new virtual environment.
+ - Activate the virtual environment.
+ - Install requirements.
+
+#### Run script
+
+```bash
+task run
+```
+
 ## Pull Requests
 
 Please make sure your pull request:
