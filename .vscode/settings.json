@@ -1,54 +1,11 @@
 {
-  //#region: MARK: font
-  "editor.fontFamily": "'Google Sans Code', JetBrains Mono, Consolas, monospace",
-  "editor.fontLigatures": true,
-  "editor.fontSize": 17,
-  "editor.lineHeight": 1.618,
-  "editor.cursorSmoothCaretAnimation": "on",
-  //#endregion: font
-
-  // #region: MARK: files&folders
-  "editor.hover.delay": 200,
-  "editor.minimap.renderCharacters": false,
-  "files.autoSave": "off",
-  "files.exclude": {
-    "**/__pycache__/": true,
-    "**/desktop.ini": true,
-    "**/.pytest_cache/": true,
-    "**/.ruff_cache/": true
-  },
-  // #endregion: files&folders
-
   //#region: MARK: formating
-  "editor.tabSize": 2,
-  "editor.insertSpaces": true,
-  "editor.detectIndentation": true,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "editor.formatOnType": false,
-
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": null,
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
-  //#endregion: formating
-
-  //#region: MARK: snippets
-  "editor.snippetSuggestions": "top",
-
-  // Enables snippet autocompletion inside text, code, strings, and markdown
-  "editor.quickSuggestions": {
-    "other": "on",
-    "comments": "on",
-    "strings": "on"
-  },
-  //#endregion: snippets
-
-  //#region: MARK: Git
-  "git.enableSmartCommit": false,
-  "diffEditor.codeLens": true,
-  //#endregion Git
-
   //#region: MARK: Python
   "python.analysis.autoImportCompletions": true,
   "python.analysis.inlayHints.callArgumentNames": "partial",
