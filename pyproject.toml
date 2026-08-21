@@ -1,8 +1,37 @@
+[project]
+name = "Physics-Simulation"
+version = "0.1.0"
+description = "Motion due to gravitational and electrostatic forces"
+readme = "README.md"
+authors = [
+    { name = "Noor Taquee", email = "noortaquee001@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "pygame>=2.6.1",
+]
+
+[project.scripts]
+my-app = "my_app:main"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.4",
+    "taskipy>=1.14.1",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+package = false
+
+
 [tool.taskipy.tasks]
-run = "python src/pygame/main.py"
+run = "python src/main.py"
 sim = "python src/tkinter/Simulation.py"
 test = "python -m tests.test"
-update = "echo \"updating dependencies...\" && .venv/bin/pip freeze > requirements.txt && echo \"done!\""
 format = "ruff format"
 lint = "ruff check"
 fix = "ruff check --fix"
