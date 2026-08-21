@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from math import atan2, degrees, sqrt
-from typing import Any
 
 
 class Vector2d:
@@ -15,17 +14,17 @@ class Vector2d:
     self.x = x
     self.y = y
 
-  def magnitude(self) -> float:
+  def magnitude(self):
     return sqrt(self.x**2 + self.y**2)
 
-  def angle_in_radians(self) -> float:
+  def angle_in_radians(self):
     angle = atan2(self.y, self.x)
     return angle
 
-  def angle_in_degrees(self) -> float:
+  def angle_in_degrees(self):
     return degrees(self.angle_in_radians())
 
-  def __call__(self) -> Any:
+  def __call__(self):
     return self.magnitude()
 
   def __add__(self, other: Vector2d):
