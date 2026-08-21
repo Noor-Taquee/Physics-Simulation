@@ -1,6 +1,9 @@
-import pygame
+import random
 import sys
-from core.logic import Environment, Vector2d, PhysicsBody
+
+from core.logic import Environment, PhysicsBody, Vector2d
+
+import pygame
 
 pygame.init()
 WIDTH, HEIGHT = 900, 600
@@ -20,29 +23,38 @@ space = Environment(HEIGHT, WIDTH)
 
 
 def mg(body: PhysicsBody):
-  return Vector2d(0, body.mass * -10)
+  return Vector2d(0, body.mass * -15)
 
 
 def air_resistance(body: PhysicsBody):
   return -0.5 * body.velocity
 
 
-# space.forces.extend([mg, air_resistance])
+space.forces.extend([mg, air_resistance])
 space.boundary_collisions = True
 
-body1 = PhysicsBody("name-1", 450, 300, 500000, 0.0, (255, 255, 255))
-body1.velocity = Vector2d(0, 0)
-body1.radius = 20
+body_count = random.randint(2, 20)
+bodies: list[PhysicsBody] = []
 
-body2 = PhysicsBody("name-2", 600, 300, 5, 0.0, (0, 0, 255))
-body2.velocity = Vector2d(0, 55)
-body2.radius = 10
+for index in range(body_count):
+  body = PhysicsBody(
+    f"name-{index + 1}",
+    random.randint(80, WIDTH - 80),
+    random.randint(80, HEIGHT - 80),
+    500,
+    0.0,
+    (
+      random.randint(80, 255),
+      random.randint(80, 255),
+      random.randint(80, 255),
+    ),
+  )
+  body.velocity = Vector2d(random.uniform(-80, 80), random.uniform(-80, 80))
+  body.radius = random.randint(8, 15)
+  body.elastic_coefficient = random.uniform(0.05, 0.08)
+  bodies.append(body)
 
-body3 = PhysicsBody("name-3", 500, 300, 10, 0.0, (0, 255, 0))
-body3.radius = 10
-body3.velocity = Vector2d(-0.9324, -0.8648)
-
-space.register(body1, body2)
+space.register(*bodies)
 
 while True:
   # Handle closing the window

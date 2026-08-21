@@ -4,8 +4,8 @@ The logic for simulations
 
 from collections import defaultdict
 from dataclasses import dataclass
-from typing import Callable, Any, Literal
 from math import sqrt
+from typing import Any, Callable, Literal
 
 from core.eventSystem import EventTarget
 from core.vector2d import Vector2d
@@ -24,7 +24,7 @@ class i2d:
 K = 9 * (10**9)
 """**Electrostatic constant**"""
 
-G = 1
+G = 0
 """**Gravitational constant**"""
 
 RGBColor255 = tuple[int, int, int]
@@ -115,6 +115,13 @@ class PhysicsBody(EventTarget):
     self.position += self.velocity * time
 
     self.dispatch_event("update", {"target": self})
+
+
+# MARK: Spring
+class Spring(PhysicsBody):
+  def __init__(self):
+    # PhysicsBody().__init__(name, x, y, 0, 0, color)
+    pass
 
 
 # MARK: Environment
