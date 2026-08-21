@@ -5,6 +5,12 @@ from typing import Any
 
 
 class Vector2d:
+  x: float
+  """x component"""
+
+  y: float
+  """y component"""
+
   def __init__(self, x: float = 0, y: float = 0):
     self.x = x
     self.y = y
