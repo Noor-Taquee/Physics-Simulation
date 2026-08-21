@@ -1,6 +1,7 @@
 from __future__ import annotations
-from typing import Any
+
 from math import atan2, degrees, sqrt
+from typing import Any
 
 
 class Vector2d:
@@ -21,40 +22,40 @@ class Vector2d:
   def __call__(self) -> Any:
     return self.magnitude()
 
-  def __add__(self, other: "Vector2d"):
+  def __add__(self, other: Vector2d):
     return Vector2d(self.x + other.x, self.y + other.y)
 
-  def __iadd__(self, other: "Vector2d"):
+  def __iadd__(self, other: Vector2d):
     self.x += other.x
     self.y += other.y
     return self
 
-  def __sub__(self, other: "Vector2d"):
+  def __sub__(self, other: Vector2d):
     return Vector2d(self.x - other.x, self.y - other.y)
 
-  def __isub__(self, other: "Vector2d"):
+  def __isub__(self, other: Vector2d):
     self.x -= other.x
     self.y -= other.y
     return self
 
-  def __mul__(self, scalar: int | float):
+  def __mul__(self, scalar: float):
     return Vector2d(self.x * scalar, self.y * scalar)
 
-  def __imul__(self, scalar: int | float):
+  def __imul__(self, scalar: float):
     self.x *= scalar
     self.y *= scalar
     return self
 
-  def __rmul__(self, scalar: int | float):
+  def __rmul__(self, scalar: float):
     return self.__mul__(scalar)
 
-  def __truediv__(self, scalar: int | float):
+  def __truediv__(self, scalar: float):
     if scalar == 0:
       raise ZeroDivisionError("Cannot divide a vector by 0.")
     reciprocal = 1 / scalar
     return Vector2d(self.x * reciprocal, self.y * reciprocal)
 
-  def __itruediv__(self, scalar: int | float):
+  def __itruediv__(self, scalar: float):
     if scalar == 0:
       raise ZeroDivisionError("Cannot divide a vector by 0.")
     reciprocal = 1 / scalar
