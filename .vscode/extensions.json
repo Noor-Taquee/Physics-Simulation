@@ -3,12 +3,6 @@
     // Code formatter
     "charliermarsh.ruff",
 
-    // Icon theme
-    "pkief.material-icon-theme",
-
-    // Theme
-    "sdras.night-owl",
-
     // toml support
     "tamasfe.even-better-toml",
 
