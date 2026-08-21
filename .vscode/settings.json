@@ -1,16 +1,4 @@
 {
-  //#region: MARK: font
-  "editor.fontFamily": "'Google Sans Code', JetBrains Mono, Consolas, monospace",
-  "editor.fontLigatures": true,
-  "editor.fontSize": 17,
-  "editor.lineHeight": 1.618,
-  "editor.cursorSmoothCaretAnimation": "on",
-  //#endregion: font
-
-  // #region: MARK: files&folders
-  "editor.hover.delay": 200,
-  "editor.minimap.renderCharacters": false,
-  "files.autoSave": "off",
   "files.exclude": {
     "**/__pycache__/": true,
     "**/desktop.ini": true,
@@ -27,14 +15,13 @@
   "editor.formatOnPaste": true,
   "editor.formatOnType": false,
 
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
   //#endregion: formating
 
   //#region: MARK: snippets
-  "editor.snippetSuggestions": "top",
+  "editor.snippetSuggestions": "inline",
 
   // Enables snippet autocompletion inside text, code, strings, and markdown
   "editor.quickSuggestions": {
