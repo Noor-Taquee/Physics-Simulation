@@ -1,0 +1,12 @@
+* text=auto eol=lf
+
+*.py text eol=lf
+*.md text eol=lf
+
+pyproject.toml text eol=lf
+uv.lock text eol=lf
+
+# Prevent binary or generated cache files from being treated as text
+*.pyc binary
+*.pyd binary
+*.whl binary
