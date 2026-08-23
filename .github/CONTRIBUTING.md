@@ -10,54 +10,68 @@ Thank you for your interest in contributing to this project.
 
 ## Development
 
-1. Fork the repository.
-2. Create a branch for your change.
-3. Make your changes.
-4. Test your work locally.
-5. Open a pull request with a clear description of the change.
+The project uses [uv](https://uv.dev) package manager.
 
-## Getting started with the project:
+If you don't have it installed, you can install it by following the instructions in the [uv documentation](https://uv.dev/docs/installation).
+Or you can use the following commands to install it directly.
 
-Quickstart scripts for Linux and Windows are available to set up the project quickly in the `/setup` directory.
+<details>
 
-### Quickstart for linux
+<summary>Download for windows</summary>
+
+### Windows(PowerShell)
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm [https://astral.sh/uv/install.ps1](https://astral.sh/uv/install.ps1) | iex"
+```
+> **Note for Windows Users:** If PowerShell shows `uv : The term 'uv' is not recognized`, restart your terminal session or refresh your environment variables so the global `uv` binary path is loaded into `PATH`.
+
+</details>
+
+<details>
+
+<summary>Download for Linux / macOS</summary>
+
+### Linux / macOS
 
 ```bash
-chmod +x setup/linux.bash && ./setup/linux.bash
+curl -LsSf [https://astral.sh/uv/install.sh](https://astral.sh/uv/install.sh) | sh
+```
+</details>
+
+---
+
+- Fork the repository.
+```bash
+git clone https://github.com/Noor-Taquee/Physics-Simulation.git
+cd Physics-Simulation
 ```
 
- - Once the script finishes, simply activate the environment and launch the project:
+- Create a branch for your change.
+```bash
+git checkout main
+git pull origin main
+git checkout -b <your-username>/<your-branch-name>
+```
+
+- Install dependencies
+```bash
+uv sync
+```
+
+- Make your changes.
+
+- Test your work locally.
+
+- Format and lint your code before committing.
 
 ```bash
-source .venv/bin/activate
-task run
+uv run ruff format
+uv run ruff check
 ```
 
-## Quickstart for Windows
+- Open a pull request with a clear description of the change.
 
-```powerShell
-./setup/windows.ps1
-```
-
- - Once the script finishes, simply activate the environment and launch the project:
-
-```powerShell
-.venv\Scripts\Activate.ps1
-task run
-```
-
-### Manual Setup
-
-If you prefer to set up the project manually, follow these steps:
- - Create a new virtual environment.
- - Activate the virtual environment.
- - Install requirements.
-
-#### Run script
-
-```bash
-task run
-```
 
 ## Pull Requests
 
