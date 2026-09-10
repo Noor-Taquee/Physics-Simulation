@@ -1,0 +1,29 @@
+target-version = "py312"
+
+line-length = 88
+indent-width = 2
+
+exclude = [".git", ".venv", "__pycache__", "wheels", "build", "dist"]
+
+[lint]
+# Selected rule suites:
+# E/W = pycodestyle (errors/warnings)
+# F   = Pyflakes (unused imports, undefined variables)
+# I   = isort (import sorting)
+# B   = flake8-bugbear (common design bugs)
+# UP  = pyupgrade (modernize Python syntax automatically)
+select = ["E", "W", "F", "I", "B", "UP"]
+
+# Ignore specific rules if needed
+ignore = []
+
+# Allow autofix for all enabled rules
+fixable = ["ALL"]
+unfixable = []
+
+[lint.isort]
+combine-as-imports = true
+
+[format]
+quote-style = "double"
+indent-style = "space"
