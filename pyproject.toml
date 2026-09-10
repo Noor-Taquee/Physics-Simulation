@@ -32,9 +32,3 @@ test = "python -m tests.test"
 format = "ruff format"
 lint = "ruff check"
 fix = "ruff check --fix"
-
-[tool.ruff]
-indent-width = 2
-
-[tool.ruff.format]
-indent-style = "space"
