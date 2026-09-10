@@ -11,9 +11,6 @@ dependencies = [
     "pygame>=2.6.1",
 ]
 
-[project.scripts]
-my-app = "my_app:main"
-
 [dependency-groups]
 dev = [
     "ruff>=0.16.4",
