@@ -8,6 +8,17 @@ updates:
       day: "tuesday"
       time: "05:00"
       timezone: "Asia/Kolkata"
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+      prod-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
     commit-message:
       prefix: "build(deps)"
       prefix-development: "build(deps-dev)"
